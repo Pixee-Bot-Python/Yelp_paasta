@@ -18,7 +18,6 @@ import getpass
 import hashlib
 import logging
 import os
-import random
 import re
 import socket
 import subprocess
@@ -77,6 +76,7 @@ from paasta_tools.utils import PaastaColors
 from paasta_tools.utils import SystemPaastaConfig
 from paasta_tools.utils import validate_service_instance
 from paasta_tools.vitesscluster_tools import load_vitess_instance_config
+import secrets
 
 try:
     from vault_tools.paasta_secret import get_client as get_vault_client
@@ -460,7 +460,7 @@ def connectable_master(cluster: str, system_paasta_config: SystemPaastaConfig) -
     if masters == []:
         raise NoMasterError("ERROR: %s" % output)
 
-    random.shuffle(masters)
+    secrets.SystemRandom().shuffle(masters)
 
     master, output = find_connectable_master(masters)
     if not master:
