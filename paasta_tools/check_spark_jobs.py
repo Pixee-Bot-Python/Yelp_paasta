@@ -15,6 +15,7 @@ from paasta_tools import mesos_tools
 from paasta_tools.monitoring_tools import send_event
 from paasta_tools.utils import DEFAULT_SOA_DIR
 from paasta_tools.utils import list_services
+from security import safe_requests
 
 
 logger = logging.getLogger(__name__)
@@ -57,7 +58,7 @@ def get_spark_properties(framework):
 
     env_endpoint = f"{webui_url}/api/v1/applications/{framework.id}/environment"
     try:
-        response = requests.get(env_endpoint, timeout=5)
+        response = safe_requests.get(env_endpoint, timeout=5)
     except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
         logger.warning(f"Unable to connect to {env_endpoint}: {e!r}")
         return None

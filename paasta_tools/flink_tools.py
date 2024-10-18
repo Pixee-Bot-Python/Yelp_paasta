@@ -40,6 +40,7 @@ from paasta_tools.utils import deep_merge_dictionaries
 from paasta_tools.utils import DEFAULT_SOA_DIR
 from paasta_tools.utils import load_service_instance_config
 from paasta_tools.utils import load_v2_deployments_json
+from security import safe_requests
 
 FLINK_INGRESS_PORT = 31080
 FLINK_DASHBOARD_TIMEOUT_SECONDS = 5
@@ -187,7 +188,7 @@ def get_flink_ingress_url_root(cluster: str, is_eks: bool) -> str:
 def _dashboard_get(cr_name: str, cluster: str, path: str, is_eks: bool) -> str:
     root = get_flink_ingress_url_root(cluster, is_eks)
     url = f"{root}{cr_name}/{path}"
-    response = requests.get(url, timeout=FLINK_DASHBOARD_TIMEOUT_SECONDS)
+    response = safe_requests.get(url, timeout=FLINK_DASHBOARD_TIMEOUT_SECONDS)
     response.raise_for_status()
     return response.text
 
@@ -239,7 +240,7 @@ def curl_flink_endpoint(cr_id: Mapping[str, str], endpoint: str) -> Mapping[str,
         # Closing 'base_url' with '/' to force urljoin to append 'endpoint' to the path.
         # If not, urljoin replaces the 'base_url' path with 'endpoint'.
         url = urljoin(base_url + "/", endpoint)
-        response = requests.get(url, timeout=FLINK_DASHBOARD_TIMEOUT_SECONDS)
+        response = safe_requests.get(url, timeout=FLINK_DASHBOARD_TIMEOUT_SECONDS)
         if not response.ok:
             return {
                 "status": response.status_code,
