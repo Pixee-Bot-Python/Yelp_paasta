@@ -159,7 +159,7 @@ def get_report_from_splunk(creds, app, filename, criteria_filter):
     log.debug(f"Sending this query to Splunk: {search}\n")
     data = {"output_mode": "json", "search": search}
     creds = creds.split(":")
-    resp = requests.post(url, data=data, auth=(creds[0], creds[1]))
+    resp = requests.post(url, data=data, auth=(creds[0], creds[1]), timeout=60)
     resp_text = resp.text.split("\n")
     log.info("Found {} services to rightsize".format(len(resp_text) - 1))
     resp_text = [x for x in resp_text if x]

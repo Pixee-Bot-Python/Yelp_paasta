@@ -40,10 +40,10 @@ class TronClient:
         kwargs = {"url": urljoin(self.master_url, url), "headers": headers}
         if method == "GET":
             kwargs["params"] = data
-            response = requests.get(**kwargs)
+            response = requests.get(**kwargs, timeout=60)
         elif method == "POST":
             kwargs["data"] = data
-            response = requests.post(**kwargs)
+            response = requests.post(**kwargs, timeout=60)
         else:
             raise ValueError(f"Unrecognized method: {method}")
 
