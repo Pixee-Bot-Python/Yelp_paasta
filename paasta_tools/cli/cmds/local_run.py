@@ -24,7 +24,6 @@ import threading
 import time
 import uuid
 from os import execlpe
-from random import randint
 from typing import Optional
 from urllib.parse import urlparse
 
@@ -71,6 +70,7 @@ from paasta_tools.utils import SystemPaastaConfig
 from paasta_tools.utils import Timeout
 from paasta_tools.utils import TimeoutError
 from paasta_tools.utils import validate_service_instance
+import secrets
 
 
 class AWSSessionCreds(TypedDict):
@@ -545,7 +545,7 @@ def add_subparser(subparsers):
 
 
 def get_container_name():
-    return "paasta_local_run_{}_{}".format(get_username(), randint(1, 999999))
+    return "paasta_local_run_{}_{}".format(get_username(), secrets.SystemRandom().randint(1, 999999))
 
 
 def get_docker_run_cmd(

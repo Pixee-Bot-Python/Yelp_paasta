@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import os
-import random
 
 import yaml
+import secrets
 
 
 def _get_smartstack_proxy_ports_from_file(root, file):
@@ -72,7 +72,7 @@ def suggest_smartstack_proxy_port(
                     pass
     available_proxy_ports.difference_update(get_inuse_ports_from_etc_services())
     try:
-        return random.choice(list(available_proxy_ports))
+        return secrets.choice(list(available_proxy_ports))
     except IndexError:
         raise Exception(
             f"There are no more ports available in the range [{range_min}, {range_max}]"
