@@ -18,6 +18,7 @@ import requests
 import yaml
 
 from paasta_tools.utils import get_user_agent
+from security import safe_requests
 
 
 log = logging.getLogger(__name__)
@@ -40,7 +41,7 @@ class TronClient:
         kwargs = {"url": urljoin(self.master_url, url), "headers": headers}
         if method == "GET":
             kwargs["params"] = data
-            response = requests.get(**kwargs)
+            response = safe_requests.get(**kwargs)
         elif method == "POST":
             kwargs["data"] = data
             response = requests.post(**kwargs)

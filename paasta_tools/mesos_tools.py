@@ -61,6 +61,7 @@ from paasta_tools.utils import load_system_paasta_config
 from paasta_tools.utils import PaastaColors
 from paasta_tools.utils import SystemPaastaConfig
 from paasta_tools.utils import TimeoutError
+from security import safe_requests
 
 ZookeeperHostPath = namedtuple("ZookeeperHostPath", ["host", "path"])
 SlaveTaskCount = namedtuple("SlaveTaskCount", ["count", "slave"])
@@ -168,7 +169,7 @@ def find_mesos_leader(cluster):
     url = f"http://{master}:{MESOS_MASTER_PORT}/redirect"
     try:
         # Timeouts here are for connect, read
-        response = requests.get(url, timeout=(5, 30))
+        response = safe_requests.get(url, timeout=(5, 30))
     except Exception as e:
         raise MesosLeaderUnavailable(e)
     hostname = urlparse(response.url).hostname
@@ -657,10 +658,10 @@ def get_local_slave_state(hostname=None):
     stats_uri = f"http://{hostname}:{MESOS_SLAVE_PORT}/state"
     try:
         headers = {"User-Agent": get_user_agent()}
-        response = requests.get(stats_uri, timeout=10, headers=headers)
+        response = safe_requests.get(stats_uri, timeout=10, headers=headers)
         if response.status_code == 404:
             fallback_stats_uri = f"http://{hostname}:{MESOS_SLAVE_PORT}/state.json"
-            response = requests.get(fallback_stats_uri, timeout=10, headers=headers)
+            response = safe_requests.get(fallback_stats_uri, timeout=10, headers=headers)
     except requests.ConnectionError as e:
         raise MesosSlaveConnectionError(
             "Could not connect to the mesos slave to see which services are running\n"
