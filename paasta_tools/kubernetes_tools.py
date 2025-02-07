@@ -2580,7 +2580,7 @@ def get_kubernetes_secret_hashes(
 
 
 def get_k8s_pods() -> Mapping[str, Any]:
-    return requests.get("http://127.0.0.1:10255/pods").json()
+    return requests.get("http://127.0.0.1:10255/pods", timeout=60).json()
 
 
 def get_all_kubernetes_services_running_here() -> List[Tuple[str, str, int]]:
