@@ -83,6 +83,7 @@ from service_configuration_lib import read_extra_service_information
 from service_configuration_lib import read_service_configuration
 
 import paasta_tools.cli.fsm
+from security import safe_command
 
 
 # DO NOT CHANGE SPACER, UNLESS YOU'RE PREPARED TO CHANGE ALL INSTANCES
@@ -2852,7 +2853,7 @@ def _run(
         popen_kwargs["stderr"] = STDOUT
         popen_kwargs["stdin"] = stdin
         popen_kwargs["env"] = env
-        process = Popen(command, **popen_kwargs)
+        process = safe_command.run(Popen, command, **popen_kwargs)
 
         if stdin_interrupt:
 
