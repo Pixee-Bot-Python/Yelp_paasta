@@ -17,11 +17,11 @@ def get_deploy_durations_from_file(filename):
     The expected input is a paasta service log for the deploy events
     The way I've been fetching them is by running 'internal logreader command' | grep deploy | grep event > filename
     """
-    file_object = open(filename, "r")
-    data = sorted(
-        [json.loads(line.rstrip("\n")) for line in file_object],
-        key=lambda x: get_datetime_from_ts(x["timestamp"]),
-    )
+    with open(filename, "r") as file_object:
+        data = sorted(
+            [json.loads(line.rstrip("\n")) for line in file_object],
+            key=lambda x: get_datetime_from_ts(x["timestamp"]),
+        )
 
     timedeltas = defaultdict(list)
     last_time = dict()
