@@ -27,7 +27,6 @@ Command line options:
 - -c <CLUSTER>, --cluster <CLUSTER>: Specify which cluster of services to read
 """
 import argparse
-import random
 import sys
 from typing import List
 
@@ -35,6 +34,7 @@ from paasta_tools import kubernetes_tools
 from paasta_tools.utils import compose_job_id
 from paasta_tools.utils import DEFAULT_SOA_DIR
 from paasta_tools.utils import get_services_for_cluster
+import secrets
 
 
 def parse_args():
@@ -104,7 +104,7 @@ def main():
             app_name = compose_job_id(name, instance)
         service_instances.append(app_name)
     if args.shuffle:
-        random.shuffle(service_instances)
+        secrets.SystemRandom().shuffle(service_instances)
 
     if args.group_lines:
         group_lines(service_instances, args.group_lines)

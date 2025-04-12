@@ -17,7 +17,6 @@ import json
 import logging
 import os
 import pprint
-import random
 import re
 import signal
 import smtplib
@@ -57,6 +56,7 @@ from paasta_tools.utils import get_config_hash
 from paasta_tools.utils import NoConfigurationForServiceError
 from paasta_tools.utils import PaastaColors
 from paasta_tools.utils import validate_service_instance
+import secrets
 
 MESOS_TASK_SPACER = "."
 TASKPROC_OFFER_TIMEOUT_RAW = "Failed due to offer timeout"
@@ -189,7 +189,7 @@ def generate_run_id(length=8):
     a run identifier
     """
     run_id = "".join(
-        random.choice(string.ascii_uppercase + string.digits) for _ in range(length)
+        secrets.choice(string.ascii_uppercase + string.digits) for _ in range(length)
     )
     print(f"Generated random run identifier: {run_id}")
     return run_id
