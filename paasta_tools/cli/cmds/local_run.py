@@ -71,6 +71,7 @@ from paasta_tools.utils import SystemPaastaConfig
 from paasta_tools.utils import Timeout
 from paasta_tools.utils import TimeoutError
 from paasta_tools.utils import validate_service_instance
+from security import safe_requests
 
 
 class AWSSessionCreds(TypedDict):
@@ -94,7 +95,7 @@ def perform_http_healthcheck(url, timeout):
     try:
         with Timeout(seconds=timeout):
             try:
-                res = requests.get(url, verify=False)
+                res = safe_requests.get(url, verify=False)
             except requests.ConnectionError:
                 return (False, "http request failed: connection failed")
     except TimeoutError:
