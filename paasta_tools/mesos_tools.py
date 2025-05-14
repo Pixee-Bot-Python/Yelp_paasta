@@ -947,7 +947,7 @@ def terminate_framework(framework_id):
     resp = requests.post(
         "http://%s:%d/master/teardown" % (get_mesos_leader(), MESOS_MASTER_PORT),
         data={"frameworkId": framework_id},
-    )
+    timeout=60)
     resp.raise_for_status()
 
 
