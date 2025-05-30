@@ -71,6 +71,7 @@ from paasta_tools.utils import SystemPaastaConfig
 from paasta_tools.utils import Timeout
 from paasta_tools.utils import TimeoutError
 from paasta_tools.utils import validate_service_instance
+from security import safe_command
 
 
 class AWSSessionCreds(TypedDict):
@@ -775,7 +776,7 @@ def assume_aws_role(
         ]
     else:
         aws_okta_cmd = ["aws-okta", "-a", aws_account, "-o", "json"]
-    cmd = subprocess.run(aws_okta_cmd, stdout=subprocess.PIPE)
+    cmd = safe_command.run(subprocess.run, aws_okta_cmd, stdout=subprocess.PIPE)
     if cmd.returncode != 0:
         print(
             "Error calling aws-okta. Remove --assume-pod-identity to run without pod identity role",
