@@ -3,7 +3,6 @@ import asyncio
 import copy
 import getpass
 import logging
-import random
 import threading
 import time
 import uuid
@@ -37,6 +36,7 @@ from paasta_tools.utils import DEFAULT_LOGLEVEL
 from paasta_tools.utils import DEFAULT_SOA_DIR
 from paasta_tools.utils import get_services_for_cluster
 from paasta_tools.utils import SystemPaastaConfig
+import secrets
 
 log = logging.getLogger(__name__)
 
@@ -331,7 +331,7 @@ class NativeScheduler(Scheduler):
                 failed_constraints += 1
                 break
 
-            task_port = random.choice(list(remainingPorts))
+            task_port = secrets.choice(list(remainingPorts))
 
             task = copy.deepcopy(base_task)
             task["task_id"] = {"value": "{}.{}".format(task["name"], uuid.uuid4().hex)}

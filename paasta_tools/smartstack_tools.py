@@ -15,7 +15,6 @@ import abc
 import collections
 import csv
 import logging
-import random
 from typing import Any
 from typing import cast
 from typing import Collection
@@ -48,6 +47,7 @@ from paasta_tools.utils import DEFAULT_SOA_DIR
 from paasta_tools.utils import DeployBlacklist
 from paasta_tools.utils import get_user_agent
 from paasta_tools.utils import SystemPaastaConfig
+import secrets
 
 
 class HaproxyBackend(TypedDict, total=False):
@@ -546,7 +546,7 @@ class BaseReplicationChecker(ReplicationChecker):
         return hosts[0].hostname
 
     def get_hostname_in_pool(self, hosts: Sequence[DiscoveredHost], pool: str) -> str:
-        return random.choice(self.get_hostnames_in_pool(hosts, pool))
+        return secrets.choice(self.get_hostnames_in_pool(hosts, pool))
 
     def get_hostnames_in_pool(
         self, hosts: Sequence[DiscoveredHost], pool: str

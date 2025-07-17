@@ -1,7 +1,7 @@
 import errno
 import fcntl
 import os.path
-import random
+import secrets
 
 MAC_ADDRESS_PREFIX = ("02", "52")
 
@@ -17,7 +17,7 @@ def reserve_unique_mac_address(lock_directory):
     and lockfile is a file object that holds an exclusive lock
     """
     for x in range(100):
-        random_hex = "{:08x}".format(random.getrandbits(32))
+        random_hex = "{:08x}".format(secrets.SystemRandom().getrandbits(32))
         mac_address = ":".join(
             MAC_ADDRESS_PREFIX
             + (random_hex[0:2], random_hex[2:4], random_hex[4:6], random_hex[6:8])
